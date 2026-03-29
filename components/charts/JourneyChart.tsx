@@ -9,7 +9,7 @@ Chart.register(SankeyController, Flow);
 
 type Row = { from: string; to: string; flow: number };
 
-function truncate(s: string, n = 26) {
+function truncate(s: string, n = 32) {
   return s.length > n ? s.slice(0, n) + "…" : s;
 }
 
@@ -69,8 +69,8 @@ export default function JourneyChart() {
             colorMode: "gradient",
             color: "#F5F0E8",
             borderWidth: 0,
-            nodePadding: 28,
-            nodeWidth: 14,
+            nodePadding: 12,
+            nodeWidth: 16,
             size: "max",
           } as never,
         ],
@@ -78,6 +78,13 @@ export default function JourneyChart() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: {
+            right: 220,
+            top: 10,
+            bottom: 10,
+          },
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -99,11 +106,11 @@ export default function JourneyChart() {
     };
   }, [data]);
 
-  if (loading) return <div className="skeleton h-[580px] rounded" />;
+  if (loading) return <div className="skeleton h-[900px] rounded" />;
   if (error) return <p className="text-[#F43F5E] text-xs font-mono">Error: {error}</p>;
 
   return (
-    <div className="chart-wrapper" style={{ height: 580 }}>
+    <div className="chart-wrapper" style={{ height: 900 }}>
       <canvas ref={canvasRef} />
     </div>
   );
