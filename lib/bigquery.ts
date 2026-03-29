@@ -116,8 +116,21 @@ export function buildFilterClauses(
   }
 
   if (sources.length > 0) {
-    const quoted = sources.map((s) => `'${s.replace(/'/g, "\\'")}'`).join(", ");
-    clauses.push(`traffic_source.medium IN (${quoted})`);
+    // In GA4, direct traffic is stored as '' (empty string), displayed as '(none)'.
+    // Both the 'direct' and '(none)' chips map to that empty-string value in BigQuery.
+    const conditions: string[] = [];
+    const literalSources: string[] = [];
+    for (const s of sources) {
+      if (s === "direct" || s === "(none)") {
+        conditions.push(`COALESCE(traffic_source.medium, '') = ''`);
+      } else {
+        literalSources.push(`'${s.replace(/'/g, "\\'")}'`);
+      }
+    }
+    if (literalSources.length > 0) {
+      conditions.push(`traffic_source.medium IN (${literalSources.join(", ")})`);
+    }
+    clauses.push(`(${conditions.join(" OR ")})`);
   }
 
   if (device !== "all" && device !== "") {
