@@ -87,7 +87,6 @@ h1, h2, h3 {
   border-radius: 8px;
   padding: 1.25rem 1.5rem;
   position: relative;
-  overflow: hidden;
   transition: border-color 0.2s ease;
 }
 
@@ -103,6 +102,7 @@ h1, h2, h3 {
   right: 0;
   height: 2px;
   background: var(--accent-color, var(--amber));
+  border-radius: 8px 8px 0 0;
 }
 
 .kpi-value {

@@ -104,7 +104,7 @@ export default function KPICard({
             </button>
 
             {showTooltip && (
-              <div className="absolute right-0 top-6 z-50 w-56 rounded-md border border-[#2A2A2A] bg-[#1C1C1C] p-3 text-[0.68rem] leading-relaxed text-[#9D9690] shadow-xl">
+              <div className="absolute right-0 top-6 z-50 w-56 rounded-md border border-[#4A4A4A] bg-[#2A2A2A] p-3 text-[0.68rem] leading-relaxed text-[#D4D0CB] shadow-2xl">
                 {tooltip}
               </div>
             )}
