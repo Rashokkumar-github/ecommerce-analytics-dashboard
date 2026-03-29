@@ -23,8 +23,6 @@ const COUNTRIES = [
 const REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania"] as const;
 type Region = (typeof REGIONS)[number];
 
-const SOURCES = ["organic", "cpc", "referral", "email", "social", "direct", "(none)"];
-
 const DEVICES = ["desktop", "mobile", "tablet"] as const;
 type Device = (typeof DEVICES)[number];
 
@@ -80,7 +78,6 @@ export default function FilterBar() {
   const endDate = getParam("endDate") || "2021-01-31";
   const selectedCountries = getArrayParam("country");
   const selectedRegions = getArrayParam("region");
-  const selectedSources = getArrayParam("source");
   const selectedDevice = getParam("device") as Device | "";
 
   // ── Toggle helpers ──────────────────────────────────────────────
@@ -98,13 +95,6 @@ export default function FilterBar() {
     pushParams({ region: next });
   };
 
-  const toggleSource = (s: string) => {
-    const next = selectedSources.includes(s)
-      ? selectedSources.filter((x) => x !== s)
-      : [...selectedSources, s];
-    pushParams({ source: next });
-  };
-
   const toggleDevice = (d: Device) => {
     pushParams({ device: selectedDevice === d ? null : d });
   };
@@ -120,7 +110,6 @@ export default function FilterBar() {
     params.has("endDate") ||
     params.has("country") ||
     params.has("region") ||
-    params.has("source") ||
     params.has("device");
 
   const filteredCountries = COUNTRIES.filter((c) =>
@@ -250,22 +239,6 @@ export default function FilterBar() {
               className={`chip ${selectedRegions.includes(r) ? "active" : ""}`}
             >
               {r}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      {/* Traffic source chips */}
-      <fieldset className="flex flex-col gap-1 border-0 p-0">
-        <legend className="filter-label">Traffic source</legend>
-        <div className="flex flex-wrap gap-1.5">
-          {SOURCES.map((s) => (
-            <button
-              key={s}
-              onClick={() => toggleSource(s)}
-              className={`chip ${selectedSources.includes(s) ? "active" : ""}`}
-            >
-              {s}
             </button>
           ))}
         </div>

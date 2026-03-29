@@ -28,7 +28,7 @@ export default function TrafficSourceChart() {
     const cfg: ChartConfiguration<"doughnut"> = {
       type: "doughnut",
       data: {
-        labels: data.map((r) => r.medium),
+        labels: data.map((r) => r.medium === "(none)" ? "direct" : r.medium),
         datasets: [
           {
             data: data.map((r) => r.sessions),
