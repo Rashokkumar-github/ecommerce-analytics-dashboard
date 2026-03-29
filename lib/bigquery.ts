@@ -13,7 +13,8 @@ import { BigQuery } from "@google-cloud/bigquery";
 function createBigQueryClient(): BigQuery {
   const projectId = process.env.GOOGLE_PROJECT_ID;
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? "";
+  const privateKey = rawKey.includes("\\n") ? rawKey.replace(/\\n/g, "\n") : rawKey;
 
   if (!projectId || !clientEmail || !privateKey) {
     throw new Error(
