@@ -11,23 +11,18 @@ import { BigQuery } from "@google-cloud/bigquery";
  */
 
 function createBigQueryClient(): BigQuery {
-  const projectId = process.env.GOOGLE_PROJECT_ID;
-  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? "";
-  const privateKey = rawKey.includes("\\n") ? rawKey.replace(/\\n/g, "\n") : rawKey;
-
-  if (!projectId || !clientEmail || !privateKey) {
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+  if (!raw) {
     throw new Error(
-      "Missing BigQuery credentials. " +
-        "Set GOOGLE_PROJECT_ID, GOOGLE_CLIENT_EMAIL, and GOOGLE_PRIVATE_KEY in .env.local"
+      "Missing BigQuery credentials. Set GOOGLE_SERVICE_ACCOUNT_JSON in .env.local or Vercel."
     );
   }
-
+  const sa = JSON.parse(raw);
   return new BigQuery({
-    projectId,
+    projectId: sa.project_id,
     credentials: {
-      client_email: clientEmail,
-      private_key: privateKey,
+      client_email: sa.client_email,
+      private_key: sa.private_key,
     },
   });
 }
