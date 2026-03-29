@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  bigquery,
+  getBigQuery,
   BQ_TABLE,
   dateFilter,
   parseFilters,
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   `;
 
   try {
-    const [rows] = await bigquery.query({ query });
+    const [rows] = await getBigQuery().query({ query });
     const r = rows[0];
 
     const totalSessions = Number(r.total_sessions) || 0;

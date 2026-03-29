@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  bigquery,
+  getBigQuery,
   BQ_TABLE,
   dateFilter,
   parseFilters,
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
   `;
 
   try {
-    const [rows] = await bigquery.query({ query });
+    const [rows] = await getBigQuery().query({ query });
     return NextResponse.json(
       rows.map((r: { month: string; device: string; sessions: unknown }) => ({
         month: r.month,

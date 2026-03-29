@@ -31,14 +31,14 @@ function createBigQueryClient(): BigQuery {
   });
 }
 
-// Singleton — reuse across hot-reloads in dev
+// Lazy singleton — only created on first request, not at build time
 const globalForBQ = globalThis as unknown as { bigquery: BigQuery | undefined };
 
-export const bigquery: BigQuery =
-  globalForBQ.bigquery ?? createBigQueryClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForBQ.bigquery = bigquery;
+export function getBigQuery(): BigQuery {
+  if (!globalForBQ.bigquery) {
+    globalForBQ.bigquery = createBigQueryClient();
+  }
+  return globalForBQ.bigquery;
 }
 
 /* ─── Constants ─────────────────────────────────────────────── */

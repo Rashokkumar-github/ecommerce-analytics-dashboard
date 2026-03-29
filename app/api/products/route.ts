@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  bigquery,
+  getBigQuery,
   BQ_TABLE,
   dateFilter,
   parseFilters,
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
         ORDER BY revenue DESC
         LIMIT 10
       `;
-      const [rows] = await bigquery.query({ query, params: { category } });
+      const [rows] = await getBigQuery().query({ query, params: { category } });
       return NextResponse.json(
         rows.map(
           (r: { product: string; revenue: unknown; units_sold: unknown; transactions: unknown }) => ({
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
         ORDER BY revenue DESC
         LIMIT 10
       `;
-      const [rows] = await bigquery.query({ query });
+      const [rows] = await getBigQuery().query({ query });
       return NextResponse.json(
         rows.map(
           (r: { category: string; revenue: unknown; units_sold: unknown; transactions: unknown }) => ({
