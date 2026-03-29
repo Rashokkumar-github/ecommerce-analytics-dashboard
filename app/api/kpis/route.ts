@@ -7,6 +7,8 @@ import {
   buildFilterClauses,
 } from "@/lib/bigquery";
 
+export const revalidate = 3600; // cache for 1 hour
+
 export async function GET(req: NextRequest) {
   const { startDate, endDate, countries, sources, regions, device } = parseFilters(
     req.url
